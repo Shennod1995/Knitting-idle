@@ -19,12 +19,12 @@ public class PlayerHands : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.ItemGiven += OnItemGiven;
+        _player.ItemGiven += OnItem;
     }
 
     private void OnDisable()
     {
-        _player.ItemGiven -= OnItemGiven;
+        _player.ItemGiven -= OnItem;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,14 +32,12 @@ public class PlayerHands : MonoBehaviour
         if (other.TryGetComponent(out Item item))
         {
             Grabbed?.Invoke(item);
-            item.MoveToTarget(transform);
-            item.transform.rotation = transform.parent.rotation;
-            item.transform.parent = transform;
+            item.SetTarget(transform);
             _collider.enabled = false;
         }
     }
 
-    private void OnItemGiven()
+    private void OnItem()
     {
         StartCoroutine(TriggerActivationTimer());
     }
@@ -47,6 +45,7 @@ public class PlayerHands : MonoBehaviour
     private IEnumerator TriggerActivationTimer()
     {
         yield return new WaitForSeconds(_timeToActivateTrigger);
+
         _collider.enabled = true;
     }
 }

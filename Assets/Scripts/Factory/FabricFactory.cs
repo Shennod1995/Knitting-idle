@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class FabricFactory : Factory, ICreateble
+public class FabricFactory : Factory
 {
-    public event UnityAction Spawned;
+    [SerializeField] private Transform _yarnPoint;
 
     public override void OnPanelClick(Player player)
     {
         if (player.ContainsBallOfYarn())
         {
-            player.GiveItem(UtilizerPoint);
+            player.GiveItem(_yarnPoint);
         }
     }
 
     public override void ItemSpawn()
     {
+        StartCoroutine(DelayToSpawn());
+    }
+
+    public override IEnumerator DelayToSpawn()
+    {
+        yield return new WaitForSeconds(Delay);
+
         var template = Instantiate(ItemTemplate, SpawnPoint.position, SpawnPoint.transform.rotation);
-        template.MoveToTarget(MovePoint);
-        Spawned?.Invoke();
+        template.SetTarget(MovePoint);
     }
 }

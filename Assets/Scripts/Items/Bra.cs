@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Bra : Item
 {
-    public override void MoveToFactory(Transform point)
+    public override void Move(Transform target)
     {
-        transform.parent = null;
-        StartCoroutine(Move(point));
-    }
+        if (transform.position != target.position)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.position, Speed * Time.deltaTime);
+        }
 
-    public override void MoveToTarget(Transform point)
-    {
-        StartCoroutine(Move(point));
+        transform.rotation = Quaternion.identity;
     }
 }

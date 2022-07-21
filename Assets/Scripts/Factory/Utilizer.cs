@@ -6,14 +6,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(BoxCollider))]
 public class Utilizer : MonoBehaviour
 {
-    private BoxCollider _boxCollider;
-
     public event UnityAction Revised;
-
-    private void Start()
-    {
-        _boxCollider = GetComponent<BoxCollider>();
-    }
 
     private void OnTriggerEnter(Collider other)
     {

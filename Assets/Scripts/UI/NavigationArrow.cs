@@ -1,52 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class NavigationArrow : MonoBehaviour
 {
     [SerializeField] private List<Transform> _waypoints;
-    [SerializeField] private BallOfYarnFactory _yarnFactory;
-    [SerializeField] private FabricFactory _fabricFactory;
-    [SerializeField] private BraFactory _braFactory;
     [SerializeField] private Player _player;
 
     private int _currentWayoint = 0;
 
+    public event UnityAction<Vector3> WaypointChanged;
+
+    private void Start()
+    {
+        WaypointChanged?.Invoke(_waypoints[_currentWayoint].position);
+    }
+
     private void OnEnable()
     {
-        _yarnFactory.Spawned += OnWaypointChange;
-        _fabricFactory.Spawned += OnWaypointChange;
-        _braFactory.Spawned += OnWaypointChange;
         _player.ItemTaken += OnWaypointChange;
+        _player.ItemGiven += OnWaypointChange;
     }
 
     private void OnDisable()
     {
-        _yarnFactory.Spawned -= OnWaypointChange;
-        _fabricFactory.Spawned -= OnWaypointChange;
-        _braFactory.Spawned -= OnWaypointChange;
         _player.ItemTaken -= OnWaypointChange;
+        _player.ItemGiven -= OnWaypointChange;
     }
 
     private void OnWaypointChange()
     {
         if (_waypoints != null)
         {
-            _currentWayoint++;
-            StartCoroutine(MoveToWaypoint(NextWaypoint()));
+            StartCoroutine(MoveToWaypoint(GetNextWaypoint()));
         }
     }
 
     private IEnumerator MoveToWaypoint(Transform waypoint)
     {
+        WaypointChanged?.Invoke(waypoint.position);
         transform.position = waypoint.position;
         yield return null;
     }
 
-    private Transform NextWaypoint()
+    private Transform GetNextWaypoint()
     {
-        if (_currentWayoint > _waypoints.Count)
+        _currentWayoint++;
+        if (_currentWayoint > _waypoints.Count -1)
             _currentWayoint = 0;
-            return _waypoints[_currentWayoint];
+
+        return _waypoints[_currentWayoint];
     }
 }

@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BraFactory : Factory, ICreateble
+public class BraFactory : Factory
 {
-    public event UnityAction Spawned;
-
-    public override void ItemSpawn()
-    {
-        var template = Instantiate(ItemTemplate, SpawnPoint.position, SpawnPoint.transform.rotation);
-        template.MoveToTarget(MovePoint);
-        Spawned?.Invoke();
-    }
+    [SerializeField] private Transform _FabricPoint;
 
     public override void OnPanelClick(Player player)
     {
         if (player.ContainsFabrick())
         {
-            player.GiveItem(UtilizerPoint);
+            player.GiveItem(_FabricPoint);
         }
+    }
+
+    public override void ItemSpawn()
+    {
+        StartCoroutine(DelayToSpawn());
+    }
+
+    public override IEnumerator DelayToSpawn()
+    {
+        yield return new WaitForSeconds(Delay);
+
+        var template = Instantiate(ItemTemplate, SpawnPoint.position, SpawnPoint.transform.rotation);
+        template.SetTarget(MovePoint);
     }
 }

@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 4455731500625627740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.95, y: 0.01, z: 5.78}
-  m_LocalScale: {x: 0.4, y: 1, z: 0.5}
+  m_LocalScale: {x: 0.3, y: 1, z: 0.4}
   m_Children:
   - {fileID: 2716866887664528652}
   m_Father: {fileID: 0}
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  _activatedColor: {r: 0.035793543, g: 1, b: 0, a: 1}
+  _activatedColor: {r: 0.39478368, g: 1, b: 0.3726415, a: 1}
 --- !u!65 &3508004301358890612
 BoxCollider:
   m_ObjectHideFlags: 0

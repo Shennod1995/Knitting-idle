@@ -1,18 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Animator))]
 public class Fabric : Item
 {
-    public override void MoveToFactory(Transform point)
+    private Animator _animator;
+    private const string Grabed = "Grabed";
+    private bool _isGrabed = false;
+
+    private void Start()
     {
-        transform.parent = null;
-        StartCoroutine(Move(point));
+        _animator = GetComponent<Animator>();
     }
 
-    public override void MoveToTarget(Transform point)
+    private void OnTriggerEnter(Collider other)
     {
-        StartCoroutine(Move(point));
+        if (other.TryGetComponent(out PlayerHands player))
+        {
+            if (_isGrabed == false)
+            {
+                _animator.SetTrigger(Grabed);
+                _isGrabed = true;
+            }
+        }
     }
 
+    public override void Move(Transform target)
+    {
+        if (transform.position != target.position)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.position, Speed * Time.deltaTime);
+        }
+
+        transform.rotation = target.rotation;
+    }
 }

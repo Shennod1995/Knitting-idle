@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Item : MonoBehaviour
+public abstract class Item : MonoBehaviour, IMovabel
 {
-    private float _speed = 15f;
+    private readonly float _speed = 20f;
+    private Transform _target;
 
     public float Speed => _speed;
 
-    public IEnumerator Move(Transform target)
+    public void SetTarget(Transform target)
     {
-        while(transform.position != target.position)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, Speed * Time.deltaTime);
-            yield return null;
-        }
+        _target = target;
     }
 
-    public abstract void MoveToTarget(Transform point);
+    private void Update()
+    {
+        Move(_target);
+    }
 
-    public abstract void MoveToFactory(Transform point);
+    public abstract void Move(Transform target);
 }

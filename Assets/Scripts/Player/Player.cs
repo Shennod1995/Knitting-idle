@@ -33,11 +33,12 @@ public class Player : MonoBehaviour
 
     public bool ContainsBallOfYarn() => _item is BallOfYarn;
     public bool ContainsFabrick() => _item is Fabric;
+    public bool ContainsBra() => _item is Bra;
 
 
     public void GiveItem(Transform factoryPoint)
     {
-        _item.MoveToFactory(factoryPoint);
+        _item.SetTarget(factoryPoint);
         ItemGiven?.Invoke();
         _item = null;
     }

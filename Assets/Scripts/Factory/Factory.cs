@@ -11,10 +11,12 @@ public abstract class Factory : MonoBehaviour
     [SerializeField] private Transform _movePoint;
     [SerializeField] private Utilizer _utilizer;
 
+    private float _delay = 0.5f;
+
     public Item ItemTemplate => _itemTemplate;
     public Transform SpawnPoint => _spawnPoint;
     public Transform MovePoint => _movePoint;
-    public Transform UtilizerPoint => _utilizer.transform;
+    public float Delay => _delay;
 
     private void OnEnable()
     {
@@ -30,4 +32,5 @@ public abstract class Factory : MonoBehaviour
 
     public abstract void ItemSpawn();
     public abstract void OnPanelClick(Player player);
+    public abstract IEnumerator DelayToSpawn();
 }
